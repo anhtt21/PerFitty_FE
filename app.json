@@ -6,6 +6,11 @@
     "orientation": "portrait",
     "scheme": "perfitty",
     "userInterfaceStyle": "light",
+    "web": {
+      "name": "PerFitty",
+      "shortName": "PerFitty",
+      "favicon": "./assets/perfitty-logo.png"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],

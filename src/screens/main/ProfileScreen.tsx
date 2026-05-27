@@ -11,24 +11,33 @@ import { spacing } from "../../theme/spacing";
 import { typography } from "../../theme/typography";
 
 export function ProfileScreen() {
+  const user = useAuthStore((state) => state.user);
   const signOut = useAuthStore((state) => state.signOut);
+
+  const displayName = user?.displayName ?? "PerFitty User";
+  const email = user?.email ?? "No email";
 
   return (
     <Screen>
       <Text style={styles.title}>Profile</Text>
       <Card>
         <View style={styles.profileRow}>
-          <Avatar name="PerFitty User" />
+          <Avatar name={displayName} />
           <View style={styles.profileText}>
-            <Text style={styles.name}>PerFitty User</Text>
-            <StatusBadge label="MVP setup" tone="success" />
+            <Text style={styles.name}>{displayName}</Text>
+            <Text style={styles.email}>{email}</Text>
+            <StatusBadge
+              label={user?.emailConfirmed ? "Verified" : "MVP setup"}
+              tone="success"
+            />
           </View>
         </View>
+
         <Button
           label="Sign out"
           variant="ghost"
           icon={<LogOut color={colors.ink} size={18} />}
-          onPress={signOut}
+          onPress={() => void signOut()}
         />
       </Card>
     </Screen>
@@ -36,23 +45,27 @@ export function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  email: {
+    color: colors.muted,
+    fontSize: typography.caption,
+  },
   name: {
     color: colors.ink,
     fontSize: typography.body,
-    fontWeight: "900"
+    fontWeight: "900",
   },
   profileRow: {
     alignItems: "center",
     flexDirection: "row",
-    gap: spacing.md
+    gap: spacing.md,
   },
   profileText: {
     flex: 1,
-    gap: spacing.xs
+    gap: spacing.xs,
   },
   title: {
     color: colors.ink,
     fontSize: typography.title,
-    fontWeight: "900"
-  }
+    fontWeight: "900",
+  },
 });
