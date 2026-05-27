@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "PerFitty",
+    "slug": "perfitty",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "perfitty",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hnanut.perfitty",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.hnanut.perfitty"
+    },
+    "plugins": [
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Allow PerFitty to protect your session."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow PerFitty to add wardrobe item photos.",
+          "cameraPermission": "Allow PerFitty to take wardrobe item photos.",
+          "microphonePermission": false
+        }
+      ]
+    ]
+  }
+}
