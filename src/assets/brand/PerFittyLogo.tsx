@@ -1,4 +1,5 @@
 import { Image, ImageStyle, StyleProp } from "react-native";
+import perfittyLogo from "../../../assets/perfitty-logo.png";
 
 type PerFittyLogoProps = {
   size?: number;
@@ -11,7 +12,7 @@ export function PerFittyLogo({ size = 40, style }: PerFittyLogoProps) {
       accessibilityIgnoresInvertColors
       accessibilityLabel="PerFitty logo"
       resizeMode="contain"
-      source={require("../../../assets/perfitty-logo.png")}
+      source={perfittyLogo}
       style={[{ height: size, width: size }, style]}
     />
   );
