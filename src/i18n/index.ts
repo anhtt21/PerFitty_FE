@@ -33,7 +33,12 @@ const translations = {
     authError: "Could not complete the request. Please try again.",
     networkError:
       "Cannot connect to PerFitty API. Please start the backend and try again.",
-    timeoutError: "The request took too long. Please try again.",
+    timeoutError:
+      "The backend or database is taking too long. Please check the API and SQL Server.",
+    databaseUnavailable:
+      "Database is not running. Please start SQL Server, then try again.",
+    serverError:
+      "The server hit an error. Please check that the backend and database are running.",
     invalidRegisterRequest: "Please enter email and password.",
     weakPassword: "Password must be at least 8 characters.",
     emailAlreadyExists: "This email is already registered.",
@@ -77,7 +82,12 @@ const translations = {
     authError: "Không thể hoàn tất yêu cầu. Vui lòng thử lại.",
     networkError:
       "Không kết nối được PerFitty API. Hãy chạy backend rồi thử lại.",
-    timeoutError: "Yêu cầu xử lý quá lâu. Vui lòng thử lại.",
+    timeoutError:
+      "Backend hoặc database phản hồi quá lâu. Hãy kiểm tra API và SQL Server.",
+    databaseUnavailable:
+      "Database chưa chạy. Hãy bật SQL Server rồi thử lại.",
+    serverError:
+      "Máy chủ đang lỗi. Hãy kiểm tra backend và database đã chạy chưa.",
     invalidRegisterRequest: "Vui lòng nhập email và mật khẩu.",
     weakPassword: "Mật khẩu cần ít nhất 8 ký tự.",
     emailAlreadyExists: "Email này đã được đăng ký.",

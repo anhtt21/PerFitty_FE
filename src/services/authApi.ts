@@ -58,6 +58,8 @@ export type AuthErrorMessages = {
   invalidRefreshToken: string;
   invalidAccessToken: string;
   userNotFound: string;
+  databaseUnavailable: string;
+  serverError: string;
 };
 
 export async function login(payload: LoginPayload) {
@@ -67,6 +69,7 @@ export async function login(payload: LoginPayload) {
       method: "POST",
       auth: false,
       body: payload,
+      timeoutMs: 8_000,
     },
   );
 
@@ -80,6 +83,7 @@ export async function register(payload: RegisterPayload) {
       method: "POST",
       auth: false,
       body: payload,
+      timeoutMs: 8_000,
     },
   );
 
@@ -93,6 +97,7 @@ export async function refreshSession(payload: RefreshTokenPayload) {
       method: "POST",
       auth: false,
       body: payload,
+      timeoutMs: 8_000,
     },
   );
 
@@ -138,6 +143,10 @@ export function getAuthErrorMessage(
       return messages.accountDisabled;
     }
 
+    if (error.status >= 500) {
+      return messages.serverError;
+    }
+
     return messages.fallback;
   }
 
@@ -178,6 +187,10 @@ function mapAuthErrorCode(code: string, messages: AuthErrorMessages) {
       return messages.invalidAccessToken;
     case "user_not_found":
       return messages.userNotFound;
+    case "database_unavailable":
+      return messages.databaseUnavailable;
+    case "unexpected_error":
+      return messages.serverError;
     default:
       return messages.fallback;
   }

@@ -16,5 +16,7 @@ export function buildAuthErrorMessages(
     invalidRefreshToken: t("invalidRefreshToken"),
     invalidAccessToken: t("invalidAccessToken"),
     userNotFound: t("userNotFound"),
+    databaseUnavailable: t("databaseUnavailable"),
+    serverError: t("serverError"),
   };
 }

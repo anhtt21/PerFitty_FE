@@ -4,7 +4,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Lock, Mail } from "lucide-react-native";
 import {
   getAuthErrorMessage,
-  getCurrentUser,
   login,
 } from "../../services/authApi";
 import { AuthStackParamList } from "../../navigation/types";
@@ -35,7 +34,6 @@ export function LoginScreen({ navigation }: Props) {
   const toggleColorMode = useUiStore((state) => state.toggleColorMode);
   const toggleLanguage = useUiStore((state) => state.toggleLanguage);
   const setSession = useAuthStore((state) => state.setSession);
-  const setUser = useAuthStore((state) => state.setUser);
 
   const palette = authThemes[colorMode];
 
@@ -71,9 +69,6 @@ export function LoginScreen({ navigation }: Props) {
         },
         response.user,
       );
-
-      const me = await getCurrentUser();
-      setUser(me);
     } catch (error) {
       setFormError(getAuthErrorMessage(error, buildAuthErrorMessages(t)));
     } finally {
