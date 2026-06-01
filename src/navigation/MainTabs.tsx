@@ -1,4 +1,10 @@
-import { CalendarDays, Home, PlusCircle, Shirt, UserRound } from "lucide-react-native";
+import {
+  CalendarDays,
+  Home,
+  PlusCircle,
+  Shirt,
+  UserRound,
+} from "lucide-react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MainTabParamList } from "./types";
 import { CalendarScreen } from "../screens/main/CalendarScreen";
@@ -6,11 +12,16 @@ import { CreateOutfitScreen } from "../screens/main/CreateOutfitScreen";
 import { HomeScreen } from "../screens/main/HomeScreen";
 import { ProfileScreen } from "../screens/main/ProfileScreen";
 import { WardrobeScreen } from "../screens/main/WardrobeScreen";
-import { colors } from "../theme/colors";
+import { useUiStore } from "../store/useUiStore";
+import { authThemes } from "../theme/authTheme";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
-function tabIcon(routeName: keyof MainTabParamList, color: string, size: number) {
+function tabIcon(
+  routeName: keyof MainTabParamList,
+  color: string,
+  size: number,
+) {
   const props = { color, size, strokeWidth: 2 };
 
   switch (routeName) {
@@ -28,19 +39,27 @@ function tabIcon(routeName: keyof MainTabParamList, color: string, size: number)
 }
 
 export function MainTabs() {
+  const colorMode = useUiStore((state) => state.colorMode);
+  const palette = authThemes[colorMode];
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.muted,
+        tabBarActiveTintColor: palette.primary,
+        tabBarInactiveTintColor: palette.muted,
         tabBarStyle: {
-          borderTopColor: colors.line,
-          height: 64,
-          paddingBottom: 8,
-          paddingTop: 8
+          backgroundColor: palette.surface,
+          borderTopColor: palette.divider,
+          height: 68,
+          paddingBottom: 10,
+          paddingTop: 8,
         },
-        tabBarIcon: ({ color, size }) => tabIcon(route.name, color, size)
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "700",
+        },
+        tabBarIcon: ({ color, size }) => tabIcon(route.name, color, size),
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />

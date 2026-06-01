@@ -24,7 +24,10 @@ export class ApiClientError extends Error {
   }
 }
 
-const baseUrl = process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:5296";
+export const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_BASE_URL ?? "http://localhost:5296";
+
+const baseUrl = API_BASE_URL;
 
 type RequestOptions = Omit<RequestInit, "body"> & {
   body?: unknown;
@@ -65,7 +68,11 @@ export async function apiRequest<T>(
 
     if (!response.ok) {
       const errorBody = await readJson(response);
-      throw new ApiClientError("API request failed", response.status, errorBody);
+      throw new ApiClientError(
+        "API request failed",
+        response.status,
+        errorBody,
+      );
     }
 
     if (response.status === 204) {
@@ -83,5 +90,50 @@ async function readJson(response: Response) {
     return await response.json();
   } catch {
     return null;
+  }
+}
+
+export async function apiFormRequest<T>(
+  path: string,
+  formData: FormData,
+  options: Omit<RequestInit, "body"> & {
+    auth?: boolean;
+    timeoutMs?: number;
+  } = {},
+) {
+  const token = options.auth === false ? null : await getAccessToken();
+  const headers = new Headers(options.headers);
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options.timeoutMs ?? 20_000,
+  );
+
+  headers.set("Accept", "application/json");
+
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  try {
+    const response = await fetch(`${baseUrl}${path}`, {
+      ...options,
+      body: formData,
+      headers,
+      signal: options.signal ?? controller.signal,
+    });
+
+    if (!response.ok) {
+      const errorBody = await readJson(response);
+      throw new ApiClientError(
+        "API request failed",
+        response.status,
+        errorBody,
+      );
+    }
+
+    return (await response.json()) as T;
+  } finally {
+    clearTimeout(timeout);
   }
 }
