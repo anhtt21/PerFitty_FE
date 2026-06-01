@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
 import { AuthNavigator } from "./AuthNavigator";
 import { MainTabs } from "./MainTabs";
 import { PerFittyLogo } from "../assets/brand/PerFittyLogo";
+import { OnboardingStyleScreen } from "../screens/auth/OnboardingStyleScreen";
+import { getStylePreferences } from "../services/profileApi";
 import { useAuthStore } from "../store/useAuthStore";
 import { useUiStore } from "../store/useUiStore";
 import { authThemes } from "../theme/authTheme";
@@ -24,12 +27,30 @@ export function RootNavigator() {
       {status === "checking" ? (
         <AuthBootstrapScreen />
       ) : isSignedIn ? (
-        <MainTabs />
+        <AuthenticatedFlow />
       ) : (
         <AuthNavigator />
       )}
     </NavigationContainer>
   );
+}
+
+function AuthenticatedFlow() {
+  const styleQuery = useQuery({
+    queryKey: ["profile", "style-preferences"],
+    queryFn: getStylePreferences,
+  });
+
+  if (styleQuery.isLoading) {
+    return <AuthBootstrapScreen />;
+  }
+
+  const preferences = styleQuery.data;
+  const hasCompletedOnboarding =
+    Boolean(preferences?.preferredStyles?.length) &&
+    Boolean(preferences?.preferredOccasions?.length);
+
+  return hasCompletedOnboarding ? <MainTabs /> : <OnboardingStyleScreen />;
 }
 
 function AuthBootstrapScreen() {
